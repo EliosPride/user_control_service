@@ -1,4 +1,4 @@
-package com.elios.user_control_service;
+package com.elios;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

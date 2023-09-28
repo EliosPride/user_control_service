@@ -1,10 +1,10 @@
-package com.elios.user_control_service.entities;
+package com.elios.entities;
 
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class User
@@ -15,7 +15,7 @@ public class User
     private String email;
     private String name;
     private String surName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
     private String phoneNumber;
 }
