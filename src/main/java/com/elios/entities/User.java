@@ -18,4 +18,19 @@ public class User
     private LocalDate dateOfBirth;
     private String address;
     private String phoneNumber;
+    
+    public User()
+    {
+    }
+    
+    public User(Long id, String email, String name, String surName, LocalDate dateOfBirth, String address, String phoneNumber)
+    {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.surName = surName;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
 }

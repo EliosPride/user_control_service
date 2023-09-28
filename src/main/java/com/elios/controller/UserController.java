@@ -75,6 +75,46 @@ public class UserController
         return ResponseEntity.ok(updatedUser);
     }
     
+    @PutMapping("/updateFields/{id}")
+    public ResponseEntity<User> updateUserFields(@PathVariable Long id, @RequestBody User updatedUserData)
+    {
+        User existingUser = accountService.findUserById(id);
+        
+        if (Objects.isNull(existingUser))
+        {
+            throw new UserNotFoundException("User not found with ID: " + id);
+        }
+        
+        if (Objects.nonNull(existingUser.getEmail()))
+        {
+            existingUser.setEmail(updatedUserData.getEmail());
+        }
+        if (Objects.nonNull(existingUser.getName()))
+        {
+            existingUser.setName(updatedUserData.getName());
+        }
+        if (Objects.nonNull(existingUser.getSurName()))
+        {
+            existingUser.setSurName(updatedUserData.getSurName());
+        }
+        if (Objects.nonNull(existingUser.getDateOfBirth()))
+        {
+            existingUser.setDateOfBirth(updatedUserData.getDateOfBirth());
+        }
+        if (Objects.nonNull(existingUser.getAddress()))
+        {
+            existingUser.setAddress(updatedUserData.getAddress());
+        }
+        if (Objects.nonNull(existingUser.getPhoneNumber()))
+        {
+            existingUser.setPhoneNumber(updatedUserData.getPhoneNumber());
+        }
+        
+        accountService.registerOrUpdateUser(existingUser);
+        
+        return ResponseEntity.ok(existingUser);
+    }
+    
     @GetMapping("/range")
     public ResponseEntity<List<User>> findUsersByBirthDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
