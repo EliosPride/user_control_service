@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class UserController
     private AccountService accountService;
     
     @PostMapping
-    public User registerUser(@RequestBody User user)
+    public ResponseEntity<User> registerUser(@RequestBody User user)
     {
         if (Objects.isNull(user))
         {
@@ -33,33 +34,33 @@ public class UserController
         {
             throw new UserRegistrationException("Failed to register user.");
         }
-        return user;
+        return ResponseEntity.ok(user);
     }
     
     @GetMapping("/get")
-    public List<User> findAllUsers()
+    public ResponseEntity<List<User>> findAllUsers()
     {
         List<User> allUsers = accountService.findAllUsers();
         if (allUsers.isEmpty())
         {
             throw new NoUsersFoundException("No users found");
         }
-        return allUsers;
+        return ResponseEntity.ok(allUsers);
     }
     
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable Long id)
+    public ResponseEntity<User> findUserById(@PathVariable Long id)
     {
         User user = accountService.findUserById(id);
         if (Objects.isNull(user))
         {
             throw new UserNotFoundException("User with ID: " + id + ", not found.");
         }
-        return user;
+        return ResponseEntity.ok(user);
     }
     
     @PutMapping("/{id}")
-    public User updateUser(@RequestBody User user)
+    public ResponseEntity<User> updateUser(@RequestBody User user)
     {
         if (Objects.isNull(user))
         {
@@ -71,11 +72,11 @@ public class UserController
         {
             throw new UserNotFoundException("User with ID: " + userId + ", not found.");
         }
-        return updatedUser;
+        return ResponseEntity.ok(updatedUser);
     }
     
     @GetMapping("/range")
-    public List<User> findUsersByBirthDateRange(
+    public ResponseEntity<List<User>> findUsersByBirthDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to)
     {
@@ -92,7 +93,7 @@ public class UserController
             throw new NoUsersFoundException("No users found within the date range.");
         }
         
-        return usersInDateRange;
+        return ResponseEntity.ok(usersInDateRange);
     }
     
     @DeleteMapping("/{id}")
