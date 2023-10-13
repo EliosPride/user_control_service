@@ -2,8 +2,6 @@ package com.elios.service.impl;
 
 import com.elios.entities.User;
 import com.elios.service.AccountService;
-import com.elios.validators.BirthDateValidator;
-import com.elios.validators.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -30,16 +28,10 @@ public class AccountServiceImpl implements AccountService
         }
         else
         {
-            boolean isValidEmail = EmailValidator.isValidEmail(user.getEmail());
-            boolean isBirthDateValid = BirthDateValidator.isBirthDateValid(user.getDateOfBirth());
-            if (isValidEmail && isBirthDateValid)
-            {
-                users.put(userId, user);
-                logger.trace("User with user id: " + userId + ", registered.");
-                return user;
-            }
+            users.put(userId, user);
+            logger.trace("User with user id: " + userId + ", registered.");
+            return user;
         }
-        return null;
     }
     
     @Override

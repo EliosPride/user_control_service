@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@Validated
 @RequestMapping("/users")
 public class UserController
 {
@@ -60,17 +62,25 @@ public class UserController
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user)
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user)
     {
+        User existingUser = accountService.findUserById(id);
+        
+        if (Objects.isNull(existingUser))
+        {
+            throw new UserNotFoundException("User not found with ID: " + id);
+        }
+        
         if (Objects.isNull(user))
         {
             throw new InvalidUserDataException("Invalid user data.");
         }
-        long userId = user.getId();
+        
         User updatedUser = accountService.registerOrUpdateUser(user);
+        
         if (Objects.isNull(updatedUser))
         {
-            throw new UserNotFoundException("User with ID: " + userId + ", not found.");
+            throw new UserNotFoundException("User with ID: " + id + ", not found.");
         }
         return ResponseEntity.ok(updatedUser);
     }

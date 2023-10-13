@@ -1,5 +1,7 @@
 package com.elios.entities;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,9 +14,11 @@ public class User
     final static Logger logger = LogManager.getLogger(User.class);
     
     private Long id;
+    @Email
     private String email;
     private String name;
     private String surName;
+    @Past
     private LocalDate dateOfBirth;
     private String address;
     private String phoneNumber;

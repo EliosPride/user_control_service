@@ -154,7 +154,7 @@ public class UserControllerTest
         
         when(accountService.registerOrUpdateUser(user)).thenReturn(user);
         
-        ResponseEntity<User> response = userController.updateUser(user);
+        ResponseEntity<User> response = userController.updateUser(1L, user);
         
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
@@ -163,8 +163,7 @@ public class UserControllerTest
     public void testUpdateUser_InvalidUserData()
     {
         User user = null;
-        
-        assertThrows(InvalidUserDataException.class, () -> userController.updateUser(user));
+        assertThrows(InvalidUserDataException.class, () -> userController.updateUser(null, user));
     }
     
     public void testUpdateUser_UserNotFound()
@@ -174,7 +173,7 @@ public class UserControllerTest
         
         when(accountService.registerOrUpdateUser(user)).thenReturn(null);
         
-        assertThrows(UserNotFoundException.class, () -> userController.updateUser(user));
+        assertThrows(UserNotFoundException.class, () -> userController.updateUser(1L, user));
     }
     
     public void testFindUsersByBirthDateRange_ValidRange()
